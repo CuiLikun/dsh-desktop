@@ -1,0 +1,43 @@
+{
+  "name": "dsh-desktop",
+  "version": "0.1.0",
+  "description": "An unofficial Windows desktop launcher for DeepSeek Harness.",
+  "main": "src/main.cjs",
+  "author": "CuiLikun",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "lint": "node --check src/main.cjs && node --check src/preload.cjs",
+    "dist": "electron-builder --win nsis portable",
+    "dist:nsis": "electron-builder --win nsis",
+    "dist:portable": "electron-builder --win portable"
+  },
+  "devDependencies": {
+    "electron": "^40.0.0",
+    "electron-builder": "^26.0.12"
+  },
+  "build": {
+    "appId": "io.github.cuilikun.dshdesktop",
+    "productName": "DSH Desktop",
+    "files": [
+      "src/**/*",
+      "package.json",
+      "README.md",
+      "LICENSE"
+    ],
+    "win": {
+      "target": ["nsis", "portable"]
+    },
+    "nsis": {
+      "artifactName": "${productName}-Setup-${version}-${arch}.${ext}",
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    },
+    "portable": {
+      "artifactName": "${productName}-Portable-${version}-${arch}.${ext}"
+    }
+  }
+}
