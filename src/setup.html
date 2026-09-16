@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; script-src 'self'; img-src 'self' data:; connect-src 'none'">
+<title>DeepSeek Harness 安装中心</title>
+<link rel="stylesheet" href="setup.css">
+</head>
+<body>
+<aside class="sidebar">
+  <div class="brand"><span class="brand-icon">D</span><div>DeepSeek Harness<small>一键安装中心</small></div></div>
+  <div class="nav-caption">开始使用</div>
+  <nav aria-label="主导航">
+    <button class="nav active" data-view="install"><span>▦</span> 安装总览</button>
+    <button class="nav" data-view="api"><span>⚿</span> API 配置</button>
+    <button class="nav" data-view="help"><span>?</span> 使用帮助</button>
+  </nav>
+  <div class="sidebar-bottom"><span class="online-dot"></span> Windows x64<span id="version"></span><p>社区项目 · 非 DeepSeek 官方客户端</p></div>
+</aside>
+<main>
+  <header><span class="breadcrumb">工作空间 / 安装中心</span><button class="text-link" data-link="platform">DeepSeek 开放平台 ↗</button></header>
+  <section id="view-install" class="view">
+    <div class="eyebrow">READY WHEN YOU ARE</div>
+    <h1>DeepSeek，一键就绪。</h1>
+    <p class="subtitle">选一个适合你的使用方式。运行环境已内置，安装、配置、启动都在这里。</p>
+    <div class="benefits"><span>✓ 无需手动安装 Node.js</span><span>✓ 无需输入命令</span><span>✓ Web 与桌面共用 API 配置</span></div>
+    <div class="cards">
+      <article class="card">
+        <div class="card-top"><span class="feature-icon web-icon"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="4" y="5" width="24" height="22" rx="3"/><path d="M4 12h24M9 9h1m3 0h1M12 17l-4 3 4 3m8-6 4 3-4 3"/></svg></span><span class="badge">ONLY WEB</span></div>
+        <h2>Harness Web 版</h2><p>在熟悉的浏览器里使用。<br>轻量安装，打开即用。</p>
+        <ul><li>安装 Harness + 独立运行环境</li><li>创建浏览器启动快捷方式</li><li>不安装桌面客户端</li></ul>
+        <div class="install-state" id="state-web">准备好安装</div>
+        <button class="button secondary install-button" data-mode="web">一键安装 Web 版 <span>↓</span></button>
+        <button class="button launch-button hidden" id="launch-web" data-launch="web">打开 Web 版 ↗</button>
+      </article>
+      <article class="card featured">
+        <div class="card-top"><span class="feature-icon desktop-icon"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="3" y="5" width="26" height="18" rx="3"/><path d="M11 28h10M16 23v5M7 9h18"/></svg></span><span class="badge recommended">推荐</span></div>
+        <h2>Harness 桌面版</h2><p>独立窗口，专注工作。<br>像普通应用一样使用 DeepSeek。</p>
+        <ul><li>内置完整 Harness 运行环境</li><li>桌面快捷方式 + 系统托盘</li><li>可随时回到安装中心配置 API</li></ul>
+        <div class="install-state" id="state-desktop">准备好安装</div>
+        <button class="button primary install-button" data-mode="desktop">一键安装桌面版 <span>↓</span></button>
+        <button class="button launch-button hidden" id="launch-desktop" data-launch="desktop">启动桌面版 ↗</button>
+      </article>
+    </div>
+    <div class="api-banner"><span class="key-mark">⚿</span><div><strong>已经有 API Key？</strong><p>粘贴一次，即可为 Web 版和桌面版完成配置。</p></div><button class="button small" data-view="api">一键配置 API →</button></div>
+    <p class="footnote">默认安装到当前用户目录。模型通过 API 使用，不包含本地模型权重。</p>
+  </section>
+  <section id="view-api" class="view hidden">
+    <div class="eyebrow">CONNECT YOUR MODEL</div><h1>连接你的 DeepSeek。</h1>
+    <p class="subtitle">只需填写 API Key。我们会通过 Harness 官方接口保存配置。</p>
+    <div class="api-layout">
+      <form class="panel" id="api-form">
+        <h2>API 配置</h2><label for="api-key">DeepSeek API Key</label>
+        <div class="input-wrap"><input id="api-key" type="password" placeholder="粘贴你的 API Key" autocomplete="off" spellcheck="false" required maxlength="512"><button type="button" id="toggle-key" aria-label="显示 API Key">显示</button></div>
+        <p class="hint">Key 仅用于当前应用的模型访问，保存后不会回显。</p>
+        <label>服务地址</label><div class="readonly-field">https://api.deepseek.com <span>官方默认</span></div>
+        <label>模型</label><div class="readonly-field">使用 Harness 官方默认模型</div>
+        <button class="button primary" id="save-api" type="submit">保存并一键配置</button>
+        <p id="api-result" class="hint" role="status">支持先配置，再安装。不会发送测试对话或自动充值。</p>
+      </form>
+      <div class="panel guide"><span class="badge">还没有 API KEY？</span><h2>三步获取密钥</h2>
+        <ol><li><strong>登录开放平台</strong><p>使用你的 DeepSeek 账号登录。</p><button class="text-link" data-link="platform">打开 DeepSeek 开放平台 ↗</button></li>
+        <li><strong>创建 API Key</strong><p>进入 API Keys 页面，创建并复制密钥。</p><button class="text-link" data-link="keys">前往创建 API Key ↗</button></li>
+        <li><strong>粘贴并保存</strong><p>将密钥粘贴到左侧。实际调用需要可用额度。</p><button class="text-link" data-link="docs">查看官方 API 入门文档 ↗</button></li></ol>
+      </div>
+    </div>
+  </section>
+  <section id="view-help" class="view hidden">
+    <div class="eyebrow">A LITTLE HELP</div><h1>从安装到第一条对话。</h1>
+    <p class="subtitle">不需要命令行。按下面的步骤开始。</p>
+    <div class="panel help-panel"><h2>第一次使用</h2><ol><li>在安装总览选择 Web 版或桌面版，点击一键安装。</li><li>在 API 配置中填写 Key，点击保存并一键配置。</li><li>点击启动，在 Harness 中选择 <strong>Choose workspace</strong>，添加项目文件夹。</li><li>新建会话，告诉 DeepSeek 你想完成什么。</li></ol>
+    <h3>如何停止与卸载？</h3><p>Web 版可从开始菜单运行“停止 DeepSeek Harness Web”；桌面版从托盘菜单退出。安装文件按版本保存在本地 Programs/DSH Web 或 Programs/DSH Desktop 中，停止后可以手动删除对应版本目录与快捷方式。配置数据默认保留。</p>
+    <h3>API 已保存，但无法对话？</h3><p>保存配置不会验证账户余额或调用模型。请检查 Key 是否有效、账户额度和网络连接，也可在 Harness 的 Settings → Models 中查看配置。</p>
+    <div class="help-links"><button class="text-link" data-link="harness">Harness 官方使用指南 ↗</button><button class="text-link" data-link="docs">DeepSeek API 文档 ↗</button><button class="text-link" id="open-data">打开应用数据目录 ↗</button></div></div>
+  </section>
+  <div class="status-bar" role="status" aria-live="polite"><span id="status-dot" class="online-dot"></span><span id="status-text">准备就绪，选择你想安装的版本。</span></div>
+</main>
+<script src="setup.js"></script>
+</body>
+</html>

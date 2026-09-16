@@ -1,34 +1,46 @@
 <!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Starting DSH Desktop</title>
-    <style>
-      :root { color-scheme: dark; font-family: "Segoe UI", sans-serif; background: #0f172a; color: #e2e8f0; }
-      body { margin: 0; min-height: 100vh; display: grid; place-items: center; }
-      main { max-width: 520px; padding: 40px; text-align: center; }
-      .logo { width: 68px; height: 68px; display: grid; place-items: center; margin: 0 auto 22px; border-radius: 18px; background: #2563eb; font-size: 28px; font-weight: 700; }
-      .spinner { width: 26px; height: 26px; margin: 28px auto 0; border: 3px solid #475569; border-top-color: #60a5fa; border-radius: 50%; animation: spin .8s linear infinite; }
-      #detail { color: #94a3b8; line-height: 1.6; }
-      .failed .spinner { display: none; }
-      .failed #detail { color: #fca5a5; }
-      @keyframes spin { to { transform: rotate(360deg); } }
-    </style>
-  </head>
-  <body>
-    <main>
-      <div class="logo">DSH</div>
-      <h1>Starting DeepSeek Harness</h1>
-      <p id="detail">Launching the local service securely on 127.0.0.1…</p>
-      <div class="spinner"></div>
-    </main>
-    <script>
-      window.dshDesktop.onStatus(({ state, details }) => {
-        document.body.classList.toggle('failed', state === 'failed' || state === 'stopped');
-        document.querySelector('h1').textContent = state === 'stopped' ? 'DeepSeek Harness stopped' : 'Unable to start DeepSeek Harness';
-        document.querySelector('#detail').textContent = details;
-      });
-    </script>
-  </body>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'">
+  <title>DSH Desktop · DeepSeek Harness</title>
+  <style>
+    :root { color-scheme: dark; font-family: "Segoe UI", "Microsoft YaHei", sans-serif; background: #0f172a; color: #e2e8f0; }
+    body { margin: 0; min-height: 100vh; display: grid; place-items: center; }
+    main { max-width: 620px; padding: 40px; }
+    .logo { width: 68px; height: 68px; display: grid; place-items: center; border-radius: 18px; background: #2563eb; font-size: 24px; font-weight: 700; }
+    h1 { font-size: 30px; margin-bottom: 8px; }
+    .muted, footer { color: #94a3b8; line-height: 1.8; }
+    ol { margin: 28px 0; padding: 22px 22px 22px 46px; background: #1e293b; border-radius: 14px; line-height: 2.2; }
+    #detail { line-height: 1.8; }
+    #actions { display: none; gap: 12px; margin: 20px 0; }
+    button { border: 1px solid #475569; background: #1e293b; color: white; border-radius: 8px; padding: 12px 20px; cursor: pointer; font: inherit; }
+    #retry { background: #2563eb; border-color: #2563eb; }
+    .spinner { width: 22px; height: 22px; border: 3px solid #475569; border-top-color: #60a5fa; border-radius: 50%; animation: spin .8s linear infinite; }
+    .failed .spinner { display: none; }
+    .failed #detail { color: #fca5a5; }
+    .failed #actions { display: flex; }
+    footer { font-size: 12px; margin-top: 32px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @media (prefers-reduced-motion: reduce) { .spinner { animation: none; } }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="logo">DSH</div>
+    <h1 id="title">正在打开 DeepSeek Harness</h1>
+    <p class="muted">运行环境已内置，启动后即可在桌面使用。</p>
+    <ol>
+      <li>打开 <strong>Settings → Models</strong>，填写你的 DeepSeek API Key。</li>
+      <li>点击 <strong>Choose workspace</strong>，选择要处理的项目文件夹。</li>
+      <li>新建会话，开始提问或编写代码。</li>
+    </ol>
+    <div role="status" aria-live="polite"><p id="detail">正在准备本地服务…</p></div>
+    <div class="spinner" aria-hidden="true"></div>
+    <div id="actions"><button id="retry">重新启动</button><button id="logs">打开诊断目录</button></div>
+    <footer>社区桌面版 · 模型通过 API 使用，需自行提供 API Key。<br>关闭窗口后会保留在系统托盘，可在托盘菜单中退出。</footer>
+  </main>
+  <script src="loading.js"></script>
+</body>
 </html>

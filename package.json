@@ -1,17 +1,24 @@
 {
   "name": "dsh-desktop",
-  "version": "0.1.0",
-  "description": "An unofficial Windows desktop launcher for DeepSeek Harness.",
+  "version": "0.2.0",
+  "description": "One-click DeepSeek Harness for Windows, with bundled Node.js and desktop app.",
   "main": "src/main.cjs",
   "author": "CuiLikun",
   "license": "MIT",
   "private": true,
   "scripts": {
     "start": "electron .",
-    "lint": "node --check src/main.cjs && node --check src/preload.cjs",
-    "dist": "electron-builder --win nsis portable --publish never",
-    "dist:nsis": "electron-builder --win nsis",
-    "dist:portable": "electron-builder --win portable"
+    "lint": "node scripts/check.cjs",
+    "dist": "node scripts/build.cjs portable",
+    "dist:nsis": "node scripts/build.cjs nsis",
+    "dist:portable": "node scripts/build.cjs portable",
+    "prepare:runtime": "node scripts/prepare-runtime.cjs",
+    "test": "node --test test/*.test.cjs",
+    "predist": "npm run prepare:runtime",
+    "predist:nsis": "npm run prepare:runtime",
+    "predist:portable": "npm run prepare:runtime",
+    "test:runtime": "node scripts/smoke-service.cjs",
+    "test:gui": "node scripts/run-gui-smoke.cjs"
   },
   "devDependencies": {
     "electron": "^40.0.0",
@@ -27,17 +34,24 @@
       "LICENSE"
     ],
     "win": {
-      "target": ["nsis", "portable"]
+      "target": [
+        "nsis",
+        "portable"
+      ]
     },
     "nsis": {
       "artifactName": "${productName}-Setup-${version}-${arch}.${ext}",
-      "oneClick": false,
-      "allowToChangeInstallationDirectory": true,
+      "oneClick": true,
+      "allowToChangeInstallationDirectory": false,
       "createDesktopShortcut": true,
-      "createStartMenuShortcut": true
+      "createStartMenuShortcut": true,
+      "perMachine": false,
+      "runAfterFinish": true
     },
     "portable": {
-      "artifactName": "${productName}-Portable-${version}-${arch}.${ext}"
-    }
+      "artifactName": "DSH-Installer-${version}-${arch}.${ext}"
+    },
+    "afterPack": "./scripts/after-pack.cjs",
+    "npmRebuild": false
   }
 }

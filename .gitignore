@@ -3,3 +3,13 @@ dist/
 release/
 *.log
 .DS_Store
+
+runtime/node-v*/
+runtime/node_modules/
+runtime/runtime.json
+runtime/*.zip
+
+
+.cache/
+.test-data/
+.local-data/
